@@ -1,5 +1,6 @@
 package com.example.project
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 
@@ -40,11 +42,11 @@ fun MoviesListScreen(movies: List<Movie>, onMovieClick: (Int) -> Unit) {
                         model = movie.photo,
                         contentDescription = movie.title,
                     )
-                    Text(text = movie.title, style = MaterialTheme.typography.titleMedium)
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(text = movie.description.take(60) + "...", style = MaterialTheme.typography.bodyMedium)
-                    Text(text = "Год выпуска: " + movie.year, style = MaterialTheme.typography.bodyMedium)
-
+                    Column {
+                        Text(text = movie.title, style = MaterialTheme.typography.titleMedium)
+                        Spacer(modifier = Modifier.height(30.dp))
+                        Text(text = "Год выпуска: " + movie.year, style = MaterialTheme.typography.bodyMedium)
+                    }
                 }
             }
         }
