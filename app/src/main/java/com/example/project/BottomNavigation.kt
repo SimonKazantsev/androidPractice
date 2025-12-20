@@ -1,3 +1,4 @@
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -35,6 +36,7 @@ fun MainScreen() {
     val vm: MoviesViewModel = viewModel()
     val navController = rememberNavController()
     var selectedItem by remember { mutableStateOf<BottomNavItem>(BottomNavItem.Movies) }
+    val uiState by vm.uiState.collectAsState()
 
     Scaffold(
         bottomBar = {
@@ -63,12 +65,11 @@ fun MainScreen() {
             Modifier.padding(innerPadding)
         ) {
             composable(Screen.MoviesList.route) {
-                val vm: MoviesViewModel = viewModel()
                 LaunchedEffect(Unit) {
                     vm.loadMovies()
                 }
                 MoviesListScreen(
-                    movies = vm.movies.collectAsState().value,
+                    uiState = uiState,
                     onMovieClick = { movieId ->
                         navController.navigate(Screen.MovieDetails.createRoute(movieId))
                     }
@@ -80,12 +81,17 @@ fun MainScreen() {
                 arguments = listOf(navArgument("imdbID") { type = NavType.StringType  })
             ) { backStackEntry ->
                 val movieId = backStackEntry.arguments?.getString("imdbID") ?: return@composable
-                val moviesList = vm.movies.collectAsState().value?.Search
-                val movie = moviesList?.find { it.imdbID == movieId }
-                if (movie != null) {
-                    MovieDetailsScreen(movie = movie, onBack = { navController.popBackStack() })
-                } else {
-                    Text("Фильм не найден")
+                val moviesList = when (uiState) {
+                    is UiState.Success -> (uiState as UiState.Success).movies
+                    else -> emptyList()
+                }
+                val movie = moviesList.find { it.imdbID == movieId }
+                Column {
+                    if (movie != null) {
+                        MovieDetailsScreen(movie = movie, onBack = { navController.popBackStack() })
+                    } else {
+                        Text("Фильм не найден")
+                    }
                 }
             }
         }

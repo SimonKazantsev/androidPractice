@@ -15,24 +15,28 @@ import kotlin.collections.emptyList
 
 sealed class UiState {
     object Loading : UiState()
-    data class Success(val movies: SearchResult) : UiState()
+    data class Success(val movies: List<MovieBrief>) : UiState()
     data class Error(val message: String) : UiState()
 }
-class MoviesViewModel() : ViewModel() {
+
+class MoviesViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-    private val _movies = MutableStateFlow<SearchResult?>(null)
-    val movies: StateFlow<SearchResult?> = _movies
 
-    val repository = MovieRepository(RetrofitInstance.api)
+    private val repository = MovieRepository(RetrofitInstance.api)
 
     fun loadMovies() {
         viewModelScope.launch {
+            _uiState.value = UiState.Loading
             try {
-                val movieList = repository.fetchMovies()
-                _movies.value = movieList
+                val result = repository.fetchMovies()
+                if (result.Response == "True") {
+                    _uiState.value = UiState.Success(result.Search)
+                } else {
+                    _uiState.value = UiState.Error(result.Error ?: "Unknown error")
+                }
             } catch (e: Exception) {
-                _uiState.value = UiState.Error("Не удалось подключиться")
+                _uiState.value = UiState.Error(e.message ?: "Error")
             }
         }
     }
