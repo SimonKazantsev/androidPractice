@@ -1,5 +1,6 @@
 package com.example.project
 
+import MovieBrief
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -19,11 +20,11 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieDetailsScreen(movie: Movie, onBack: () -> Unit) {
+fun MovieDetailsScreen(movie: MovieBrief, onBack: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(movie.title) },
+                title = { Text(movie.Title) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Filled.Clear, contentDescription = "Назад")
@@ -33,9 +34,8 @@ fun MovieDetailsScreen(movie: Movie, onBack: () -> Unit) {
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding).padding(16.dp)) {
-            Text(text = movie.title, style = MaterialTheme.typography.headlineMedium)
+            Text(text = movie.Title, style = MaterialTheme.typography.headlineMedium)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = movie.description, style = MaterialTheme.typography.bodyLarge)
         }
     }
 }

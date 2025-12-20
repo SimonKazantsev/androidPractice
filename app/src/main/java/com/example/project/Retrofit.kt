@@ -3,7 +3,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 object RetrofitInstance {
-    private const val BASE_URL = "http://www.omdbapi.com/?t=Inception&apikey=YOUR_API_KEY"
+    private const val BASE_URL = "https://www.omdbapi.com/"
 
     val api: MovieApiService by lazy {
         Retrofit.Builder()

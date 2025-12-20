@@ -13,8 +13,8 @@ import com.example.project.MoviesListScreen
 
 sealed class Screen(val route: String) {
     object MoviesList : Screen("movies_list")
-    object MovieDetails : Screen("movie_details/{movieId}") {
-        fun createRoute(movieId: Int) = "movie_details/$movieId"
+    object MovieDetails : Screen("movie_details/{imdbID}") {
+        fun createRoute(imdbID: String) = "movie_details/$imdbID"
     }
 }
 
@@ -32,6 +32,7 @@ sealed class BottomNavItem(
 
 @Composable
 fun MainScreen() {
+    val vm: MoviesViewModel = viewModel()
     val navController = rememberNavController()
     var selectedItem by remember { mutableStateOf<BottomNavItem>(BottomNavItem.Movies) }
 
@@ -76,11 +77,11 @@ fun MainScreen() {
 
             composable(
                 route = Screen.MovieDetails.route,
-                arguments = listOf(navArgument("movieId") { type = NavType.IntType })
+                arguments = listOf(navArgument("imdbID") { type = NavType.StringType  })
             ) { backStackEntry ->
-                val movieId = backStackEntry.arguments?.getInt("movieId") ?: return@composable
-                val vm: MoviesViewModel = viewModel()
-                val movie = vm.movies.collectAsState().value.find { it.id == movieId }
+                val movieId = backStackEntry.arguments?.getString("imdbID") ?: return@composable
+                val moviesList = vm.movies.collectAsState().value?.Search
+                val movie = moviesList?.find { it.imdbID == movieId }
                 if (movie != null) {
                     MovieDetailsScreen(movie = movie, onBack = { navController.popBackStack() })
                 } else {

@@ -10,8 +10,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.project"
-        minSdk = 24
-        targetSdk = 34
+        minSdk = 33
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -64,8 +64,8 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("androidx.compose.material:material-icons-extended:1.4.3")
     implementation("androidx.compose.material3:material3:1.1.0")
-    implementation("com.squareup.retrofit2:retrofit:2.3.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.3.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
 
 
