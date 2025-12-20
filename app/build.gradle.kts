@@ -64,6 +64,9 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("androidx.compose.material:material-icons-extended:1.4.3")
     implementation("androidx.compose.material3:material3:1.1.0")
+    implementation("com.squareup.retrofit2:retrofit:2.3.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.3.0")
+
 
 
     testImplementation(libs.junit)

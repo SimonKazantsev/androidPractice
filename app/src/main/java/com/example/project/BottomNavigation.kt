@@ -63,6 +63,9 @@ fun MainScreen() {
         ) {
             composable(Screen.MoviesList.route) {
                 val vm: MoviesViewModel = viewModel()
+                LaunchedEffect(Unit) {
+                    vm.loadMovies()
+                }
                 MoviesListScreen(
                     movies = vm.movies.collectAsState().value,
                     onMovieClick = { movieId ->
